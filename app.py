@@ -9,11 +9,11 @@ app.secret_key = os.getenv("SECRET_KEY", "fallback_secret")
 # ---------------- DATABASE ----------------
 def get_db():
     return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASS"),
-        database=os.getenv("DB_NAME"),
-        port=int(os.getenv("DB_PORT", 3306))
+        host="switchback.proxy.rlwy.net",
+        user="root",
+        password="VgLKJrmTaNbORfyDrlZjMlOFjcYYdiBM",
+        database="railway",
+        port=34362
     )
 
 # ---------------- ENCRYPTION ----------------
@@ -203,6 +203,4 @@ def confirm_delete():
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+    app.run()
