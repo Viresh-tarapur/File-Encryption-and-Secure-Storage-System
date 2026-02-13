@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, sen
 import mysql.connector
 from cryptography.fernet import Fernet
 import io, os, re
+import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "fallback_secret")
@@ -9,11 +10,11 @@ app.secret_key = os.getenv("SECRET_KEY", "fallback_secret")
 # ---------------- DATABASE ----------------
 def get_db():
     return mysql.connector.connect(
-        host="switchback.proxy.rlwy.net",
-        user="root",
-        password="VgLKJrmTaNbORfyDrlZjMlOFjcYYdiBM",
-        database="railway",
-        port=34362
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT"))
     )
 
 # ---------------- ENCRYPTION ----------------
@@ -204,3 +205,4 @@ def confirm_delete():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run()
+
