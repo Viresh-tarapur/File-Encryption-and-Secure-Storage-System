@@ -4,29 +4,30 @@ from cryptography.fernet import Fernet
 import io, os, re
 
 app = Flask(__name__)
-app.secret_key = "fixed_secret_key_123"
+app.secret_key = os.getenv("SECRET_KEY", "fallback_secret")
 
-# ---------- DB ----------
+# ---------------- DATABASE ----------------
 def get_db():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Tarapur@2003",
-        database="secure_storage"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASS"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT", 3306))
     )
 
-# ---------- ENCRYPTION ----------
+# ---------------- ENCRYPTION ----------------
 if not os.path.exists("secret.key"):
     open("secret.key","wb").write(Fernet.generate_key())
 
 cipher = Fernet(open("secret.key","rb").read())
 
-# ---------- PASSWORD RULE ----------
+# ---------------- PASSWORD RULE ----------------
 def strong_pw(pw):
     return len(pw)>=8 and re.search("[A-Z]",pw) and re.search("[a-z]",pw) \
            and re.search("[0-9]",pw) and re.search("[!@#$%^&*]",pw)
 
-# ---------- HOME ----------
+# ---------------- HOME ----------------
 @app.route("/")
 def home():
     uid=session.get("user_id",0)
@@ -39,7 +40,7 @@ def home():
         db.close()
     return render_template("index.html",user_id=uid,files=files)
 
-# ---------- SIGNUP ----------
+# ---------------- SIGNUP ----------------
 @app.route("/signup",methods=["POST"])
 def signup():
     email=request.form["email"]
@@ -61,7 +62,7 @@ def signup():
 
     return redirect("/")
 
-# ---------- LOGIN ----------
+# ---------------- LOGIN ----------------
 @app.route("/login",methods=["POST"])
 def login():
     email=request.form["email"]
@@ -80,13 +81,13 @@ def login():
 
     return redirect("/")
 
-# ---------- LOGOUT ----------
+# ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
-# ---------- UPLOAD ----------
+# ---------------- UPLOAD ----------------
 @app.route("/upload",methods=["POST"])
 def upload():
     if "user_id" not in session:
@@ -110,7 +111,7 @@ def upload():
     flash("Uploaded")
     return redirect("/")
 
-# ---------- ASK PASSWORD FOR VIEW ----------
+# ---------------- ASK PASSWORD FOR VIEW ----------------
 @app.route("/ask/<int:file_id>")
 def ask(file_id):
     uid=session["user_id"]
@@ -121,7 +122,7 @@ def ask(file_id):
     db.close()
     return render_template("index.html",user_id=uid,files=files,ask_id=file_id)
 
-# ---------- VIEW ----------
+# ---------------- VIEW ----------------
 @app.route("/view",methods=["POST"])
 def view_file():
     file_id=request.form["file_id"]
@@ -142,7 +143,7 @@ def view_file():
     dec=cipher.decrypt(file[1])
     return send_file(io.BytesIO(dec),download_name=file[0],as_attachment=False)
 
-# ---------- DOWNLOAD ----------
+# ---------------- DOWNLOAD ----------------
 @app.route("/download",methods=["POST"])
 def download_file():
     file_id=request.form["file_id"]
@@ -163,9 +164,7 @@ def download_file():
     dec=cipher.decrypt(file[1])
     return send_file(io.BytesIO(dec),download_name=file[0],as_attachment=True)
 
-# ================= DELETE WITH PASSWORD =================
-
-# ---------- ASK DELETE PASSWORD ----------
+# ---------------- ASK DELETE PASSWORD ----------------
 @app.route("/delete/<int:file_id>")
 def ask_delete(file_id):
     uid=session["user_id"]
@@ -180,7 +179,7 @@ def ask_delete(file_id):
                            files=files,
                            delete_id=file_id)
 
-# ---------- CONFIRM DELETE ----------
+# ---------------- CONFIRM DELETE ----------------
 @app.route("/confirm_delete",methods=["POST"])
 def confirm_delete():
     file_id=request.form["file_id"]
@@ -190,13 +189,11 @@ def confirm_delete():
     db=get_db()
     cur=db.cursor()
 
-    # verify password
     cur.execute("SELECT password FROM users WHERE id=%s",(uid,))
     if cur.fetchone()[0] != password:
         flash("Wrong Password")
         return redirect("/")
 
-    # delete file
     cur.execute("DELETE FROM files WHERE id=%s AND user_id=%s",(file_id,uid))
     db.commit()
     db.close()
@@ -204,6 +201,6 @@ def confirm_delete():
     flash("File Deleted")
     return redirect("/")
 
-# ========================================================
-
-app.run(debug=True)
+# ---------------- RUN ----------------
+if __name__ == "__main__":
+    app.run()
