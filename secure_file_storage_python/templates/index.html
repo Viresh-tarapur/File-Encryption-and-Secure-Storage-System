@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVault - Modern Digital Vault</title>
+    
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Modern Glass Morphism Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Modern Card Design */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Modern Form Controls */
+        .modern-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .modern-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+        }
+
+        .modern-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+
+        /* Modern Buttons */
+        .btn-modern {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary-modern {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success-modern {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #1a1a1a;
+        }
+
+        .btn-info-modern {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            color: #1a1a1a;
+        }
+
+        .btn-danger-modern {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #1a1a1a;
+        }
+
+        .btn-warning-modern {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: #1a1a1a;
+        }
+
+        /* File Cards */
+        .file-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .file-icon {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .file-meta {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .file-actions .btn {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            border-radius: 10px;
+        }
+
+        /* Alert Messages */
+        .modern-alert {
+            background: rgba(72, 187, 120, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            border-radius: 12px;
+            color: white;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .stats-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, transparent);
+            border-radius: 2px;
+        }
+
+        /* Password Popup */
+        .password-popup {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Delete Confirmation Popup */
+        .delete-popup {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-top: 2rem;
+            animation: slideUp 0.5s ease;
+            border-left: 4px solid #fa709a;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .popup-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .delete-popup .popup-title i {
+            color: #fa709a;
+        }
+
+        /* Warning Text */
+        .warning-text {
+            background: rgba(250, 112, 154, 0.1);
+            border-radius: 10px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            border: 1px solid rgba(250, 112, 154, 0.3);
+        }
+
+        .warning-text i {
+            color: #fa709a;
+            margin-right: 0.5rem;
+        }
+
+        /* File Upload Area */
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                margin-bottom: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .password-popup .row > div,
+            .delete-popup .row > div {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Modern Navbar -->
+<nav class="navbar">
+    <div class="container-fluid px-0">
+        <span class="navbar-brand">
+            <i class="bi bi-shield-lock-fill"></i>
+            SecureVault
+        </span>
+        {% if user_id != 0 %}
+        <a href="/logout" class="btn btn-logout">
+            <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+{% for m in messages %}
+<div class="modern-alert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    {{m}}
+</div>
+{% endfor %}
+{% endwith %}
+
+{% if user_id == 0 %}
+
+<!-- Modern Signup/Login Section -->
+<div class="row justify-content-center min-vh-100 align-items-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="glass-card p-5">
+            <h3 class="text-center mb-4" style="color: white; font-weight: 700;">
+                <i class="bi bi-person-plus-fill me-2"></i>
+                Welcome Back
+            </h3>
+            
+            <!-- Sign Up Form -->
+            <form method="post" action="/signup" class="mb-4">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0" style="border-color: rgba(255,255,255,0.2);">
+                            <i class="bi bi-envelope-fill" style="color: rgba(255,255,255,0.7);"></i>
+                        </span>
+                        <input type="email" class="form-control modern-input border-start-0" 
+                               name="email" placeholder="Email address" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0" style="border-color: rgba(255,255,255,0.2);">
+                            <i class="bi bi-lock-fill" style="color: rgba(255,255,255,0.7);"></i>
+                        </span>
+                        <input type="password" class="form-control modern-input border-start-0" 
+                               name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-modern btn-primary-modern w-100">
+                    <i class="bi bi-person-plus-fill me-2"></i>Create Account
+                </button>
+            </form>
+            
+            <div class="position-relative my-4">
+                <hr style="border-color: rgba(255,255,255,0.2);">
+                <span class="position-absolute top-50 start-50 translate-middle px-3" 
+                      style="background: rgba(255,255,255,0.1); color: white; border-radius: 50px;">
+                    OR
+                </span>
+            </div>
+            
+            <!-- Sign In Form -->
+            <form method="post" action="/login">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0" style="border-color: rgba(255,255,255,0.2);">
+                            <i class="bi bi-envelope-fill" style="color: rgba(255,255,255,0.7);"></i>
+                        </span>
+                        <input type="email" class="form-control modern-input border-start-0" 
+                               name="email" placeholder="Email address" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0" style="border-color: rgba(255,255,255,0.2);">
+                            <i class="bi bi-lock-fill" style="color: rgba(255,255,255,0.7);"></i>
+                        </span>
+                        <input type="password" class="form-control modern-input border-start-0" 
+                               name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-modern btn-success-modern w-100">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                </button>
+            </form>
+            
+            <p class="text-center mt-4 mb-0" style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">
+                <i class="bi bi-shield-check me-1"></i>
+                Your data is encrypted and secure
+            </p>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<!-- Modern Dashboard -->
+<div class="row">
+    
+    <!-- Left Panel -->
+    <div class="col-md-4">
+        <!-- Upload Card -->
+        <div class="glass-card p-4 mb-4">
+            <h5 class="mb-3" style="color: white; font-weight: 600;">
+                <i class="bi bi-cloud-upload-fill me-2"></i>
+                Upload File
+            </h5>
+            <form method="post" action="/upload" enctype="multipart/form-data">
+                <div class="upload-area mb-3" onclick="document.getElementById('fileInput').click()">
+                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <input type="file" name="file" id="fileInput" style="display: none;" required>
+                </div>
+                <button type="submit" class="btn btn-modern btn-primary-modern w-100">
+                    <i class="bi bi-upload me-2"></i>Upload Now
+                </button>
+            </form>
+        </div>
+        
+        <!-- Stats Card -->
+        <div class="glass-card p-4">
+            <div class="stats-card">
+                <div class="stats-number">{{files|length}}</div>
+                <div class="stats-label">Total Files</div>
+                <div class="mt-3">
+                    <i class="bi bi-database" style="color: rgba(255,255,255,0.5);"></i>
+                    <span style="color: rgba(255,255,255,0.7); font-size: 0.9rem;"> Secure Storage</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File List -->
+    <div class="col-md-8">
+        <h5 class="section-title">
+            <i class="bi bi-files me-2"></i>
+            Your Files
+        </h5>
+        
+        <div class="row g-4">
+            {% for f in files %}
+            <div class="col-md-6">
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="bi bi-file-earmark-lock-fill"></i>
+                    </div>
+                    <div class="file-name">
+                        <i class="bi bi-file-earmark me-2"></i>
+                        {{f[1]}}
+                    </div>
+                    <div class="file-meta">
+                        <i class="bi bi-shield-lock-fill me-1"></i>
+                        Encrypted • Secured
+                    </div>
+                    <div class="file-actions">
+                        <a href="/ask/{{f[0]}}" class="btn btn-modern btn-info-modern">
+                            <i class="bi bi-eye-fill me-1"></i> Open
+                        </a>
+                        <a href="/delete/{{f[0]}}" class="btn btn-modern btn-danger-modern">
+                            <i class="bi bi-trash-fill me-1"></i> Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="glass-card p-5 text-center">
+                    <i class="bi bi-cloud-slash" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>
+                    <h5 style="color: rgba(255,255,255,0.7); margin-top: 1rem;">No files yet</h5>
+                    <p style="color: rgba(255,255,255,0.5);">Upload your first file to get started</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Modern Password Popup -->
+{% if ask_id %}
+<div class="password-popup">
+    <div class="popup-title">
+        <i class="bi bi-key-fill me-2"></i>
+        Enter File Password
+    </div>
+    
+    <div class="row g-3">
+        <div class="col-md-6">
+            <form method="post" action="/view">
+                <input type="hidden" name="file_id" value="{{ask_id}}">
+                <div class="input-group mb-2">
+                    <span class="input-group-text bg-transparent" style="border-color: rgba(255,255,255,0.2);">
+                        <i class="bi bi-lock-fill" style="color: rgba(255,255,255,0.7);"></i>
+                    </span>
+                    <input type="password" name="password" class="form-control modern-input" 
+                           placeholder="Enter password to view" required>
+                </div>
+                <button type="submit" class="btn btn-modern btn-info-modern w-100">
+                    <i class="bi bi-eye-fill me-2"></i>View File
+                </button>
+            </form>
+        </div>
+        
+        <div class="col-md-6">
+            <form method="post" action="/download">
+                <input type="hidden" name="file_id" value="{{ask_id}}">
+                <div class="input-group mb-2">
+                    <span class="input-group-text bg-transparent" style="border-color: rgba(255,255,255,0.2);">
+                        <i class="bi bi-lock-fill" style="color: rgba(255,255,255,0.7);"></i>
+                    </span>
+                    <input type="password" name="password" class="form-control modern-input" 
+                           placeholder="Enter password to download" required>
+                </div>
+                <button type="submit" class="btn btn-modern btn-success-modern w-100">
+                    <i class="bi bi-download me-2"></i>Download
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Modern Delete Confirmation Popup -->
+{% if delete_id %}
+<div class="delete-popup">
+    <div class="popup-title">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Confirm Deletion
+    </div>
+    
+    <div class="warning-text">
+        <i class="bi bi-info-circle-fill"></i>
+        This action cannot be undone. The file will be permanently deleted.
+    </div>
+    
+    <form method="post" action="/confirm_delete">
+        <input type="hidden" name="file_id" value="{{delete_id}}">
+        
+        <div class="mb-3">
+            <label class="form-label" style="color: rgba(255,255,255,0.8);">
+                <i class="bi bi-lock-fill me-2"></i>Enter Password to Confirm
+            </label>
+            <div class="input-group">
+                <span class="input-group-text bg-transparent" style="border-color: rgba(255,255,255,0.2);">
+                    <i class="bi bi-key-fill" style="color: rgba(255,255,255,0.7);"></i>
+                </span>
+                <input type="password" name="password" class="form-control modern-input" 
+                       placeholder="Enter your password" required>
+            </div>
+        </div>
+        
+        <div class="d-flex gap-2">
+            <a href="/" class="btn btn-modern btn-secondary-modern flex-grow-1" 
+               style="background: rgba(255,255,255,0.1); color: white;">
+                <i class="bi bi-x-circle me-2"></i>Cancel
+            </a>
+            <button type="submit" class="btn btn-modern btn-danger-modern flex-grow-1">
+                <i class="bi bi-trash-fill me-2"></i>Delete Permanently
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% endif %}
+
+</div>
+
+<!-- Bootstrap JS (optional, for interactive components) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript for modern interactions -->
+<script>
+    // Drag and drop functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadArea = document.querySelector('.upload-area');
+        const fileInput = document.getElementById('fileInput');
+        
+        if (uploadArea && fileInput) {
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            // Highlight drop zone when item is dragged over
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            // Handle dropped files
+            uploadArea.addEventListener('drop', handleDrop, false);
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            function highlight(e) {
+                uploadArea.style.borderColor = '#ffd700';
+                uploadArea.style.background = 'rgba(255, 255, 255, 0.15)';
+            }
+            
+            function unhighlight(e) {
+                uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                uploadArea.style.background = 'transparent';
+            }
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    // Show selected file name
+                    const fileName = files[0].name;
+                    uploadArea.querySelector('p').textContent = `Selected: ${fileName}`;
+                }
+            }
+            
+            // Update when file is selected via click
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    uploadArea.querySelector('p').textContent = `Selected: ${this.files[0].name}`;
+                }
+            });
+        }
+    });
+    
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.modern-alert');
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 5000);
+    
+    // Smooth scroll to top
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
