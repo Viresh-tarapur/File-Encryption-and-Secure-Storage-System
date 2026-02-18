@@ -1,39 +1,36 @@
-🔐 SecureVault – Secure File Storage
+## 🔐 SecureVault – Secure File Storage System
 
-SecureVault is a Flask + MySQL web application designed for securely uploading, viewing, downloading, and deleting files with encryption and password protection.
+SecureVault is a Python-based secure file storage system that encrypts files before storing them in the database.
+Only authenticated users with valid credentials can upload, view, download, or delete their files.
 
-🎯 Why We Built This Project
+This project ensures confidentiality, integrity, and protection against unauthorized access using practical cryptographic techniques.
 
-This project was built to learn cybersecurity concepts and improve Python & full-stack development skills.
-It focuses on secure data storage, user authentication, and encryption techniques to protect files from unauthorized access.
+#🚀 Features
 
-📝 Project Summary
+🔑 User Authentication (Login / Signup)
 
-Developed a Python-based secure file management system that encrypts and decrypts files using cryptographic techniques, ensuring data confidentiality, secure storage, and protection against unauthorized access.
+🔐 File Encryption before storage
 
-🚀 Features
+🔓 File Decryption on authorized access
 
-User Signup & Login
+📂 Upload, Download, Delete files
 
-Encrypted File Storage (Fernet Encryption)
+🗄️ Secure Database Storage
 
-Upload / View / Download Files
+🌐 Accessible from anywhere (Web-based system)
 
-Delete Files with Password Confirmation
+🛡️ Protection against unauthorized file access
 
-Multi-User Support
+#🏗️ Tech Stack
 
-Auto Logout on Browser Close
+Backend : Python , MySQL, Flask, MySQL
 
-Modern Dark UI Dashboard
+Frontend: HTML, CSS
 
-🛠️ Tech Stack
+Tools: VS Code
 
-Python • Flask • MySQL • HTML • CSS • Bootstrap • Cryptography
 
 ## 🎥 Project Demo
-
-Watch the SecureVault demo video here:  
 
 
 https://github.com/user-attachments/assets/c19d29e0-ec12-4e3d-a3f0-873c4934250a
@@ -41,59 +38,27 @@ https://github.com/user-attachments/assets/c19d29e0-ec12-4e3d-a3f0-873c4934250a
 
 
 
-## In this project i used MVC Architecture 
+# In this project i used MVC Architecture 
 
 ![MVC architecture,](https://github.com/user-attachments/assets/b09969dd-fbfe-4c9c-ab71-291aa82c763c)
 
 🧩 MVC Architecture – Project Design
 
-SecureVault is built using the MVC (Model – View – Controller) architecture to ensure clean code structure, scalability, and strong security practices.
+#🔒 How It Works
 
-🗄️ Model – Data & Security Layer
+User signs up and logs in.
 
-Manages MySQL database operations
+When a file is uploaded:
 
-Stores user credentials & encrypted files
+The file is encrypted using a secure encryption algorithm.
 
-Performs encryption / decryption logic
+The encrypted file is stored in the database.
 
-Ensures data confidentiality and integrity
+When the authorized user downloads the file:
 
-🎨 View – User Interface Layer
+The system decrypts it.
 
-Built with HTML + Bootstrap (Dark UI)
+The original file is returned securely.
 
-Displays Signup, Login, Dashboard & File Cards
+Only the file owner can access or manage their files.
 
-Dynamically renders user data
-
-Provides a modern and responsive experience
-
-⚙️ Controller – Application Logic Layer
-
-Implemented using Flask Routes
-
-Handles user requests & responses
-
-Connects Model ↔ View
-
-Performs authentication & password validation
-
-Controls secure operations like upload, view, download, delete
-
-🔄 Request Flow
-User → Controller → Model → Database → Controller → View → User
-
-✨ Why MVC?
-
-Better Code Organization
-
-Easy Maintenance & Scaling
-
-Improved Security Handling
-
-Separation of Concerns
-
-Professional Software Design
-
-This architecture ensures that SecureVault is not just a working app, but a well-structured and industry-style secure system. 🔐🚀
